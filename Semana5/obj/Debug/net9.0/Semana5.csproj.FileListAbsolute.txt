@@ -1,0 +1,4 @@
+/Users/christianortiz/Desktop/Semana5/obj/Debug/net9.0/Semana5.GeneratedMSBuildEditorConfig.editorconfig
+/Users/christianortiz/Desktop/Semana5/obj/Debug/net9.0/Semana5.AssemblyInfoInputs.cache
+/Users/christianortiz/Desktop/Semana5/obj/Debug/net9.0/Semana5.AssemblyInfo.cs
+/Users/christianortiz/Desktop/Semana5/obj/Debug/net9.0/Semana5.csproj.CoreCompileInputs.cache
