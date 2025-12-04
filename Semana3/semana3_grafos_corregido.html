@@ -1,0 +1,1774 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Semana 3: Teoría de Grafos – Representación y Modelado [CORREGIDO]</title>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{
+      font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height:1.6;color:#2c3e50;
+      background:linear-gradient(135deg,#f5f7fa 0%,#c3cfe2 100%);
+      min-height:100vh
+    }
+    .container{max-width:1200px;margin:0 auto;padding:20px}
+    header{
+      text-align:center;margin-bottom:40px;background:#fff;
+      padding:30px;border-radius:15px;
+      box-shadow:0 10px 30px rgba(0,0,0,0.1)
+    }
+    h1{font-size:2.4em;margin-bottom:8px}
+    .subtitle{font-size:1.1em;color:#7f8c8d;font-weight:300}
+    nav{
+      background:#fff;padding:15px;border-radius:10px;margin-bottom:30px;
+      box-shadow:0 5px 15px rgba(0,0,0,0.08);position:sticky;top:20px;z-index:100
+    }
+    nav ul{list-style:none;display:flex;justify-content:center;flex-wrap:wrap;gap:12px}
+    nav a{text-decoration:none;color:#34495e;padding:10px 18px;border-radius:22px;transition:all .3s ease;font-weight:500}
+    nav a:hover, nav a.active{background:#3498db;color:#fff;transform:translateY(-2px)}
+    .section{background:#fff;margin-bottom:30px;padding:28px;border-radius:15px;box-shadow:0 8px 25px rgba(0,0,0,0.1);display:none}
+    .section.active{display:block}
+    .section h2{color:#2c3e50;margin-bottom:18px;font-size:1.7em;border-bottom:3px solid #3498db;padding-bottom:8px}
+    .section h3{color:#34495e;margin:20px 0 12px;font-size:1.3em}
+    .challenge{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:#fff;padding:18px;border-radius:10px;margin:18px 0}
+    .activity{background:#f8f9fa;border-left:5px solid #28a745;padding:18px;margin:18px 0;border-radius:0 8px 8px 0}
+    .activity h4{color:#28a745;margin-bottom:8px}
+    .error-box{background:#fff5f5;border-left:5px solid #e74c3c;padding:18px;margin:18px 0;border-radius:0 8px 8px 0}
+    .error-box h4{color:#e74c3c;margin-bottom:8px}
+    .code-container{background:#2c3e50;border-radius:10px;overflow:hidden;margin:18px 0;box-shadow:0 5px 15px rgba(0,0,0,0.2)}
+    .code-header{background:#34495e;color:#fff;padding:10px 16px;font-weight:bold;display:flex;justify-content:space-between;align-items:center}
+    .code-content{padding:18px;color:#ecf0f1;font-family:'Courier New', monospace;font-size:14px;line-height:1.6;overflow-x:auto;white-space:pre}
+    .keyword{color:#3498db}.string{color:#e74c3c}.comment{color:#95a5a6;font-style:italic}.number{color:#f39c12}
+    .comparison-table{width:100%;border-collapse:collapse;margin:16px 0;overflow:hidden;border-radius:10px;box-shadow:0 5px 15px rgba(0,0,0,0.1)}
+    .comparison-table th,.comparison-table td{padding:14px;text-align:left;border-bottom:1px solid #e9ecef}
+    .comparison-table th{background:#3498db;color:#fff;font-weight:600}
+    .comparison-table tr:nth-child(even){background:#f8f9fa}
+    .progress-bar{background:#ecf0f1;height:6px;border-radius:3px;margin-top:14px;overflow:hidden}
+    .progress-fill{background:linear-gradient(90deg,#3498db,#2ecc71);height:100%;width:0%;transition:width .3s ease}
+    .btn{background:#3498db;color:#fff;border:none;padding:11px 22px;border-radius:24px;cursor:pointer;font-size:15px;transition:all .3s ease;margin:8px 4px}
+    .btn:hover{background:#2980b9;transform:translateY(-2px);box-shadow:0 5px 15px rgba(52,152,219,0.4)}
+    .btn-success{background:#27ae60}.btn-success:hover{background:#229954}
+    .tag{display:inline-block;background:#eef6ff;color:#1f5faa;border:1px solid #cfe3ff;border-radius:999px;padding:4px 10px;margin:4px 6px 0 0;font-size:12px}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .note{font-size:.95em;color:#566573;padding:12px;background:#f8f9fa;border-radius:6px;margin:12px 0;white-space: pre-wrap;}
+    ul,ol{margin-left:20px;margin-top:10px}
+    li{margin-bottom:8px}
+    @media (max-width: 900px){.grid{grid-template-columns:1fr}}
+    .fade-in{animation:fadeIn .6s ease-in}
+    @keyframes fadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🌐 Semana 3 – Teoría de Grafos: Representación y Modelado</h1>
+      <p class="subtitle">Vértices, aristas, grados y cómo elegir la representación correcta</p>
+      <p>Estructuras de Datos Avanzadas © 2025 | <strong>Versión Corregida</strong></p>
+      <div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
+      <div style="margin-top:10px">
+        <span class="tag">Grafos</span>
+        <span class="tag">Matriz de Adyacencia</span>
+        <span class="tag">Lista de Adyacencia</span>
+        <span class="tag">Modelado</span>
+        <span class="tag">Análisis de Trade-offs</span>
+      </div>
+    </header>
+
+    <nav>
+      <ul>
+        <li><a href="#" onclick="showSection('introduccion')" class="nav-link active">Introducción</a></li>
+        <li><a href="#" onclick="showSection('conceptos')" class="nav-link">Conceptos</a></li>
+        <li><a href="#" onclick="showSection('representaciones')" class="nav-link">Representaciones</a></li>
+        <li><a href="#" onclick="showSection('problema')" class="nav-link">Problema</a></li>
+        <li><a href="#" onclick="showSection('cs')" class="nav-link">Solución C#</a></li>
+        <li><a href="#" onclick="showSection('py')" class="nav-link">Solución Python</a></li>
+        <li><a href="#" onclick="showSection('actividades')" class="nav-link">Actividades</a></li>
+        <li><a href="#" onclick="showSection('comparacion')" class="nav-link">Comparación</a></li>
+        <li><a href="#" onclick="showSection('proyecto')" class="nav-link">Proyecto</a></li>
+      </ul>
+    </nav>
+
+    <!-- INTRODUCCIÓN -->
+    <section id="introduccion" class="section active fade-in">
+      <h2>🎯 Objetivos de la Semana</h2>
+      <div class="activity">
+        <h4>¿Qué lograrás hoy?</h4>
+        <ul>
+          <li>Reconocer elementos de un grafo: vértices, aristas, pesos, dirección.</li>
+          <li>Comparar <strong>matriz</strong> vs <strong>lista de adyacencia</strong> con criterios de memoria y tiempo.</li>
+          <li>Implementar una <strong>clase Grafo robusta</strong> en C# usando listas de adyacencia.</li>
+          <li>Construir grafo en Python a partir de un <em>archivo de aristas</em>.</li>
+          <li>Identificar y <strong>corregir errores comunes</strong> en implementaciones de grafos.</li>
+        </ul>
+      </div>
+      <div class="challenge">
+        <h3>Enfoque Pedagógico</h3>
+        <p><strong>Problema General</strong> → <strong>Solución en C#</strong> → <strong>Solución en Python</strong></p>
+        <p style="margin-top:10px">Cada implementación está completamente comentada para facilitar tu aprendizaje.</p>
+      </div>
+      <button class="btn" onclick="showSection('conceptos')">Continuar → Conceptos</button>
+    </section>
+
+    <!-- CONCEPTOS -->
+    <section id="conceptos" class="section">
+      <h2>🧩 Conceptos Clave</h2>
+      <div class="grid">
+        <div class="activity">
+          <h4>Definiciones Fundamentales</h4>
+          <ul>
+            <li><strong>Vértices (nodos):</strong> entidades del sistema (intersecciones, bodegas, usuarios).</li>
+            <li><strong>Aristas:</strong> conexiones entre vértices (calles, enlaces). Pueden ser dirigidas o no dirigidas.</li>
+            <li><strong>Peso:</strong> costo, distancia o tiempo asociado a una arista.</li>
+            <li><strong>Grado de salida:</strong> número de aristas que salen de un vértice (cuenta multiaristas).</li>
+            <li><strong>Grado de entrada:</strong> número de aristas que llegan a un vértice (cuenta multiaristas).</li>
+          </ul>
+        </div>
+        <div class="activity">
+          <h4>Tipos de Grafos</h4>
+          <ul>
+            <li><strong>No dirigido:</strong> las aristas no tienen dirección (carretera bidireccional).</li>
+            <li><strong>Dirigido:</strong> las aristas tienen dirección (calle de un solo sentido).</li>
+            <li><strong>Ponderado:</strong> las aristas tienen pesos (distancias).</li>
+            <li><strong>No ponderado:</strong> las aristas no tienen pesos (solo conexión sí/no).</li>
+            <li><strong>Disperso (sparse):</strong> pocas aristas en relación a vértices (m ≪ n²).</li>
+            <li><strong>Denso (dense):</strong> muchas aristas (m ≈ n²).</li>
+            <li><strong>Multigrafo:</strong> permite múltiples aristas entre el mismo par (u,v) con diferentes pesos.</li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="challenge">
+        <h3>🎯 Enfoque de Este Documento: Multigrafo Dirigido Ponderado</h3>
+        <p>Trabajaremos con un <strong>multigrafo dirigido ponderado</strong>, que combina:</p>
+        <ul style="margin-top:10px">
+          <li>✅ <strong>Dirigido:</strong> Aristas con dirección específica (A→B ≠ B→A)</li>
+          <li>✅ <strong>Ponderado:</strong> Cada arista tiene un peso (distancia en km)</li>
+          <li>✅ <strong>Multigrafo:</strong> Permite múltiples aristas (u,v) con diferentes pesos</li>
+          <li>✅ <strong>Mixto:</strong> Combina aristas dirigidas y bidireccionales (implementadas como pares dirigidos)</li>
+        </ul>
+        <p style="margin-top:10px"><strong>Ejemplo del mundo real:</strong> Red de transporte urbano con autopistas y carreteras locales entre las mismas zonas.</p>
+      </div>
+      
+      <p class="note"><strong>💡 Nota:</strong> La elección de representación afecta directamente la complejidad de operaciones. En multigrafos, operaciones como <code>HasEdge(u,v)</code> retornan <em>true</em> si existe CUALQUIER arista, mientras que <code>HasEdgeWithWeight(u,v,w)</code> busca una arista específica.</p>
+      <button class="btn" onclick="showSection('representaciones')">Ir a Representaciones →</button>
+    </section>
+
+    <!-- REPRESENTACIONES -->
+    <section id="representaciones" class="section">
+      <h2>🗺️ Representaciones: Matriz vs Lista</h2>
+      <div class="grid">
+        <div class="activity">
+          <h4>Matriz de Adyacencia</h4>
+          <ul>
+            <li>Arreglo bidimensional n×n donde <code>mat[i][j]</code> indica si existe arista i→j.</li>
+            <li><strong>Memoria:</strong> O(n²) - siempre usa espacio cuadrático.</li>
+            <li><strong>Consulta de arista:</strong> O(1) - acceso directo.</li>
+            <li><strong>Ideal para:</strong> grafos densos o cuando necesitas consultas rápidas de existencia.</li>
+            <li><strong>Problema:</strong> desperdicia memoria en grafos dispersos.</li>
+          </ul>
+        </div>
+        <div class="activity">
+          <h4>Lista de Adyacencia</h4>
+          <ul>
+            <li>Arreglo/diccionario donde cada vértice guarda una lista de sus vecinos.</li>
+            <li><strong>Memoria:</strong> O(n + m) - proporcional a vértices y aristas.</li>
+            <li><strong>Consulta de arista:</strong> O(grado(u)) - debe recorrer lista de vecinos.</li>
+            <li><strong>Ideal para:</strong> grafos dispersos o cuando recorres vecinos frecuentemente.</li>
+            <li><strong>Ventaja:</strong> eficiente en memoria para grafos reales (típicamente dispersos).</li>
+          </ul>
+        </div>
+      </div>
+
+      <table class="comparison-table">
+        <thead><tr><th>Operación</th><th>Matriz</th><th>Lista</th></tr></thead>
+        <tbody>
+          <tr><td>Memoria (grafo disperso)</td><td>❌ O(n²)</td><td>✅ O(n+m)</td></tr>
+          <tr><td>¿Existe arista (u,v)?</td><td>✅ O(1)</td><td>O(grado(u))</td></tr>
+          <tr><td>Agregar arista (sin validar)</td><td>✅ O(1)</td><td>✅ O(1)</td></tr>
+          <tr><td>Agregar arista (validando duplicados exactos)</td><td>✅ O(1)</td><td>O(grado(u))</td></tr>
+          <tr><td>Eliminar arista</td><td>✅ O(1)</td><td>O(grado(u))</td></tr>
+          <tr><td>Eliminar arista específica (por peso)</td><td>✅ O(1)</td><td>O(grado(u))</td></tr>
+          <tr><td>Recorrer vecinos de u</td><td>O(n)</td><td>✅ O(grado(u))</td></tr>
+          <tr><td>Obtener todos los pesos u→v</td><td>O(1)</td><td>✅ O(grado(u))</td></tr>
+          <tr><td>Soporte multiaristas</td><td>Complejo (requiere lista de pesos por celda)</td><td>✅ Natural (lista de tuplas)</td></tr>
+        </tbody>
+      </table>
+
+      <div class="challenge">
+        <h3>¿Cuándo usar cada una?</h3>
+        <p><strong>Lista de Adyacencia:</strong> Cuando m ≪ n² (grafos dispersos como redes sociales, mapas urbanos).</p>
+        <p><strong>Matriz de Adyacencia:</strong> Cuando m ≈ n² (grafos densos) o necesitas consultas O(1) constantes.</p>
+      </div>
+
+      <button class="btn" onclick="showSection('problema')">Ver el Problema →</button>
+    </section>
+
+    <!-- PROBLEMA GENERAL -->
+    <section id="problema" class="section">
+      <h2>🎯 Problema General: Mapa de Ciudad con Zonas Importantes</h2>
+      
+      <div class="challenge">
+        <h3>Contexto del Problema</h3>
+        <p>Una ciudad necesita modelar su red de transporte urbano. Hay 8 zonas importantes conectadas por calles. Algunas calles son bidireccionales (dos carriles) y otras de un solo sentido (restricción vehicular). Cada conexión tiene una distancia en kilómetros.</p>
+      </div>
+
+      <div class="activity">
+        <h4>Vértices (Intersecciones/Zonas)</h4>
+        <table class="comparison-table" style="font-size:0.9em">
+          <thead><tr><th>ID</th><th>Descripción</th></tr></thead>
+          <tbody>
+            <tr><td><strong>A</strong></td><td>Centro Comercial</td></tr>
+            <tr><td><strong>B</strong></td><td>Zona Norte</td></tr>
+            <tr><td><strong>C</strong></td><td>Zona Sur</td></tr>
+            <tr><td><strong>D</strong></td><td>Este Industrial</td></tr>
+            <tr><td><strong>E</strong></td><td>Oeste Residencial</td></tr>
+            <tr><td><strong>F</strong></td><td>Zona Industrial</td></tr>
+            <tr><td><strong>G</strong></td><td>Hospital</td></tr>
+            <tr><td><strong>H</strong></td><td>Estadio</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="activity">
+        <h4>Aristas (Calles) - No Dirigidas (Bidireccionales)</h4>
+        <ul style="column-count:2">
+          <li>A ↔ B: 2.0 km</li>
+          <li>A ↔ C: 3.0 km</li>
+          <li>B ↔ D: 1.0 km</li>
+          <li>C ↔ E: 4.0 km</li>
+          <li>D ↔ F: 5.0 km</li>
+          <li>E ↔ F: 2.0 km</li>
+          <li>G ↔ H: 6.0 km</li>
+        </ul>
+      </div>
+
+      <div class="activity">
+        <h4>Aristas (Calles) - Dirigidas (Un solo sentido)</h4>
+        <ul style="column-count:2">
+          <li>A → G: 1.0 km (al hospital)</li>
+          <li>B → H: 3.0 km (al estadio)</li>
+          <li>C → D: 2.0 km</li>
+          <li>F → E: 4.0 km</li>
+          <li>H → A: 5.0 km (vuelta al centro)</li>
+        </ul>
+      </div>
+
+      <div class="error-box">
+        <h4>⚠️ Problema Educativo Clave: La Conexión E-F (Multigrafo)</h4>
+        <p><strong>Situación:</strong> Observa que existen DOS aristas diferentes entre F y E:</p>
+        <ul>
+          <li>E ↔ F: 2.0 km (bidireccional - se implementa como E→F y F→E)</li>
+          <li>F → E: 4.0 km (dirigida adicional - ruta alterna)</li>
+        </ul>
+        <p><strong>Resultado:</strong> Desde F hacia E existen 2 rutas con diferentes costos:</p>
+        <ul>
+          <li>F→E: 2.0 km (de la bidireccional)</li>
+          <li>F→E: 4.0 km (dirigida adicional)</li>
+        </ul>
+        <p><strong>Concepto Teórico: Multigrafo Ponderado</strong></p>
+        <p>Un <strong>multigrafo</strong> permite múltiples aristas entre el mismo par ordenado de vértices (u,v). En este caso, tenemos dos aristas F→E con pesos diferentes (2.0 y 4.0 km).</p>
+        
+        <p><strong>¿Por qué es importante?</strong></p>
+        <ul>
+          <li><strong>Realismo:</strong> Redes de transporte reales tienen rutas paralelas (autopista vs carretera local)</li>
+          <li><strong>Representación:</strong> Cada arista tiene diferente costo/velocidad/capacidad</li>
+          <li><strong>Algoritmos:</strong> Caminos más cortos deben considerar todas las opciones</li>
+        </ul>
+        
+        <p><strong>Implementación Correcta:</strong></p>
+        <p>Para soportar multigrafos, la verificación de duplicados debe comparar <strong>(destino, peso)</strong> en lugar de solo destino:</p>
+        <pre style="font-size:0.85em">✅ Correcto: if not any((neighbor, w) == (v, weight) for neighbor, w in adj[u])
+❌ Incorrecto: if not any(neighbor == v for neighbor, w in adj[u])</pre>
+        
+        <p><strong>Implicaciones en Grados:</strong></p>
+        <ul>
+          <li>OutDegree(F) = 3 (incluye D, E con 2.0 km, E con 4.0 km)</li>
+          <li>InDegree(E) = 3 (incluye C, F con 2.0 km, F con 4.0 km)</li>
+          <li>Cada arista cuenta por separado aunque tengan mismo origen/destino</li>
+        </ul>
+      </div>
+
+      <h3>Preguntas que el Sistema Debe Responder</h3>
+      <div class="note">
+<strong>Consultas básicas:</strong>
+1. ¿Existe ruta directa de E a F? (Sí, bidireccional 2.0 km)
+2. ¿Existe ruta directa de F a E? (Sí, DOBLE: bidireccional 2.0 km O dirigida 4.0 km)
+3. ¿Cuántas rutas salen del Centro Comercial (A)?
+4. ¿Cuál es el grado de entrada del Hospital (G)?
+5. ¿Qué zonas son accesibles desde la Zona Norte (B)?
+
+<strong>Complejidad del grafo mixto:</strong>
+Este problema introduce grafos con aristas dirigidas Y no dirigidas simultáneamente, 
+un caso común en redes de transporte urbano reales.
+      </div>
+
+      <div class="error-box">
+        <h4>⚠️ Errores Comunes a Evitar</h4>
+        <ul>
+          <li><strong>❌ ERROR CRÍTICO: Verificar duplicados solo por destino</strong> en lugar de (destino, peso) - bloquea multiaristas válidas</li>
+          <li><strong>Permitir aristas duplicadas exactas</strong> (mismo u, v, peso) sin verificación</li>
+          <li><strong>No validar</strong> que los vértices existan antes de operar</li>
+          <li><strong>Olvidar actualizar ambas direcciones</strong> en aristas bidireccionales</li>
+          <li><strong>Confundir</strong> grado de entrada y salida en grafos dirigidos</li>
+          <li><strong>No contar multiaristas</strong> por separado al calcular grados</li>
+          <li><strong>Asumir que HasEdge retorna peso</strong> cuando solo indica existencia</li>
+        </ul>
+      </div>
+
+      <button class="btn" onclick="showSection('cs')">Ver Solución en C# →</button>
+    </section>
+
+    <!-- IMPLEMENTACIÓN C# -->
+    <section id="cs" class="section">
+      <h2>💻 Solución Completa en C#</h2>
+      
+      <h3>Clase Grafo con Lista de Adyacencia</h3>
+      <div class="code-container">
+        <div class="code-header"><span>C# • Grafo genérico dirigido ponderado</span><span>Lista de adyacencia</span></div>
+        <div class="code-content"><span class="keyword">using</span> System;
+<span class="keyword">using</span> System.Collections.Generic;
+<span class="keyword">using</span> System.Linq;
+
+<span class="comment">/// &lt;summary&gt;
+/// Grafo genérico dirigido con pesos.
+/// Usa lista de adyacencia para eficiencia en memoria.
+/// &lt;/summary&gt;</span>
+<span class="keyword">public</span> <span class="keyword">class</span> Graph&lt;T&gt; {
+    <span class="comment">// Diccionario: cada vértice apunta a su lista de (vecino, peso)</span>
+    <span class="keyword">private</span> <span class="keyword">readonly</span> Dictionary&lt;T, List&lt;(T to, <span class="keyword">double</span> weight)&gt;&gt; adj = <span class="keyword">new</span>();
+    
+    <span class="comment">// Flag para indicar si el grafo es dirigido o no</span>
+    <span class="keyword">private</span> <span class="keyword">readonly</span> <span class="keyword">bool</span> isDirected;
+
+    <span class="comment">/// &lt;summary&gt;
+    /// Constructor del grafo
+    /// &lt;/summary&gt;
+    /// &lt;param name="directed"&gt;true para grafo dirigido, false para no dirigido&lt;/param&gt;</span>
+    <span class="keyword">public</span> Graph(<span class="keyword">bool</span> directed = <span class="keyword">true</span>) {
+        isDirected = directed;
+    }
+
+    <span class="comment">/// &lt;summary&gt;
+    /// Agrega un vértice al grafo si no existe.
+    /// Complejidad: O(1) promedio
+    /// &lt;/summary&gt;</span>
+    <span class="keyword">public</span> <span class="keyword">void</span> AddVertex(T v) {
+        <span class="keyword">if</span> (!adj.ContainsKey(v)) {
+            adj[v] = <span class="keyword">new</span> List&lt;(T, <span class="keyword">double</span>)&gt;();
+        }
+    }
+
+    <span class="comment">/// &lt;summary&gt;
+    /// Agrega una arista al grafo.
+    /// SOPORTA MULTIARISTAS: Permite múltiples aristas entre (u,v) con diferentes pesos.
+    /// Previene solo aristas IDÉNTICAS (mismo destino Y mismo peso).
+    /// Complejidad: O(grado(u)) por la verificación de duplicados exactos
+    /// &lt;/summary&gt;</span>
+    <span class="keyword">public</span> <span class="keyword">void</span> AddEdge(T u, T v, <span class="keyword">double</span> weight = <span class="number">1.0</span>) {
+        <span class="comment">// Asegurar que ambos vértices existan</span>
+        AddVertex(u);
+        AddVertex(v);
+        
+        <span class="comment">// CRUCIAL: Verificar duplicados por (destino, peso)</span>
+        <span class="comment">// Esto permite F→E (2.0) y F→E (4.0) coexistir (multigrafo)</span>
+        <span class="comment">// pero previene F→E (2.0) duplicado</span>
+        <span class="keyword">if</span> (!adj[u].Exists(e =&gt; EqualityComparer&lt;T&gt;.Default.Equals(e.to, v) 
+                              && Math.Abs(e.weight - weight) &lt; <span class="number">0.0001</span>)) {
+            adj[u].Add((v, weight));
+        }
+        
+        <span class="comment">// Si el grafo NO es dirigido, agregar arista inversa</span>
+        <span class="keyword">if</span> (!isDirected) {
+            <span class="keyword">if</span> (!adj[v].Exists(e =&gt; EqualityComparer&lt;T&gt;.Default.Equals(e.to, u) 
+                                  && Math.Abs(e.weight - weight) &lt; <span class="number">0.0001</span>)) {
+                adj[v].Add((u, weight));
+            }
+        }
+    }
+
+    <span class="comment">/// &lt;summary&gt;
+    /// Verifica si existe AL MENOS UNA arista entre u y v.
+    /// En multigrafos, retorna true si hay cualquier arista u→v (sin importar el peso).
+    /// Complejidad: O(grado(u))
+    /// &lt;/summary&gt;</span>
+    <span class="keyword">public</span> <span class="keyword">bool</span> HasEdge(T u, T v) {
+        <span class="keyword">if</span> (!adj.ContainsKey(u)) {
+            <span class="keyword">return</span> <span class="keyword">false</span>;
+        }
+        
+        <span class="comment">// Buscar cualquier arista al destino v</span>
+        <span class="keyword">foreach</span> (<span class="keyword">var</span> (neighbor, _) <span class="keyword">in</span> adj[u]) {
+            <span class="keyword">if</span> (EqualityComparer&lt;T&gt;.Default.Equals(neighbor, v)) {
+                <span class="keyword">return</span> <span class="keyword">true</span>;
+            }
+        }
+        <span class="keyword">return</span> <span class="keyword">false</span>;
+    }
+
+    <span class="comment">/// &lt;summary&gt;
+    /// Verifica si existe una arista específica entre u y v con el peso exacto.
+    /// Útil para multigrafos donde pueden existir múltiples aristas u→v.
+    /// Complejidad: O(grado(u))
+    /// &lt;/summary&gt;</span>
+    <span class="keyword">public</span> <span class="keyword">bool</span> HasEdgeWithWeight(T u, T v, <span class="keyword">double</span> weight) {
+        <span class="keyword">if</span> (!adj.ContainsKey(u)) {
+            <span class="keyword">return</span> <span class="keyword">false</span>;
+        }
+        
+        <span class="comment">// Buscar arista específica con el peso exacto</span>
+        <span class="keyword">foreach</span> (<span class="keyword">var</span> (neighbor, w) <span class="keyword">in</span> adj[u]) {
+            <span class="keyword">if</span> (EqualityComparer&lt;T&gt;.Default.Equals(neighbor, v) 
+                && Math.Abs(w - weight) &lt; <span class="number">0.0001</span>) {
+                <span class="keyword">return</span> <span class="keyword">true</span>;
+            }
+        }
+        <span class="keyword">return</span> <span class="keyword">false</span>;
+    }
+
+    <span class="comment">/// &lt;summary&gt;
+    /// Obtiene todos los vecinos de un vértice.
+    /// Complejidad: O(1)
+    /// &lt;/summary&gt;</span>
+    <span class="keyword">public</span> IEnumerable&lt;(T to, <span class="keyword">double</span> weight)&gt; Neighbors(T u) {
+        <span class="keyword">if</span> (!adj.ContainsKey(u)) {
+            <span class="keyword">throw</span> <span class="keyword">new</span> ArgumentException($<span class="string">"Vértice {u} no existe en el grafo"</span>);
+        }
+        <span class="keyword">return</span> adj[u];
+    }
+
+    <span class="comment">/// &lt;summary&gt;
+    /// Calcula el grado de salida (número de aristas salientes).
+    /// Complejidad: O(1)
+    /// &lt;/summary&gt;</span>
+    <span class="keyword">public</span> <span class="keyword">int</span> OutDegree(T u) {
+        <span class="keyword">return</span> adj.ContainsKey(u) ? adj[u].Count : <span class="number">0</span>;
+    }
+
+    <span class="comment">/// &lt;summary&gt;
+    /// Calcula el grado de entrada (número de aristas entrantes).
+    /// IMPORTANTE: Necesario para grafos dirigidos.
+    /// Complejidad: O(n + m) donde n=vértices, m=aristas
+    /// &lt;/summary&gt;</span>
+    <span class="keyword">public</span> <span class="keyword">int</span> InDegree(T v) {
+        <span class="keyword">int</span> count = <span class="number">0</span>;
+        <span class="comment">// Revisar todos los vértices</span>
+        <span class="keyword">foreach</span> (<span class="keyword">var</span> u <span class="keyword">in</span> adj.Keys) {
+            <span class="comment">// Contar cuántas veces aparece v en las listas de vecinos</span>
+            count += adj[u].Count(e =&gt; EqualityComparer&lt;T&gt;.Default.Equals(e.to, v));
+        }
+        <span class="keyword">return</span> count;
+    }
+
+    <span class="comment">/// &lt;summary&gt;
+    /// Elimina TODAS las aristas de u a v (todas las multiaristas si existen).
+    /// Complejidad: O(grado(u)) + O(grado(v)) si no es dirigido
+    /// &lt;/summary&gt;</span>
+    <span class="keyword">public</span> <span class="keyword">int</span> RemoveEdge(T u, T v) {
+        <span class="keyword">int</span> removed = <span class="number">0</span>;
+        
+        <span class="comment">// Eliminar todas las aristas u → v</span>
+        <span class="keyword">if</span> (adj.ContainsKey(u)) {
+            removed = adj[u].RemoveAll(e =&gt; EqualityComparer&lt;T&gt;.Default.Equals(e.to, v));
+        }
+        
+        <span class="comment">// Si no es dirigido, eliminar también todas v → u</span>
+        <span class="keyword">if</span> (!isDirected && adj.ContainsKey(v)) {
+            adj[v].RemoveAll(e =&gt; EqualityComparer&lt;T&gt;.Default.Equals(e.to, u));
+        }
+        
+        <span class="keyword">return</span> removed;
+    }
+
+    <span class="comment">/// &lt;summary&gt;
+    /// Elimina UNA arista específica de u a v con el peso exacto.
+    /// En multigrafos, solo elimina la primera coincidencia.
+    /// Complejidad: O(grado(u)) + O(grado(v)) si no es dirigido
+    /// &lt;/summary&gt;</span>
+    <span class="keyword">public</span> <span class="keyword">bool</span> RemoveEdgeWithWeight(T u, T v, <span class="keyword">double</span> weight) {
+        <span class="keyword">bool</span> removed = <span class="keyword">false</span>;
+        
+        <span class="comment">// Eliminar primera arista u → v con peso específico</span>
+        <span class="keyword">if</span> (adj.ContainsKey(u)) {
+            <span class="keyword">int</span> index = adj[u].FindIndex(e =&gt; 
+                EqualityComparer&lt;T&gt;.Default.Equals(e.to, v) 
+                && Math.Abs(e.weight - weight) &lt; <span class="number">0.0001</span>);
+            
+            <span class="keyword">if</span> (index &gt;= <span class="number">0</span>) {
+                adj[u].RemoveAt(index);
+                removed = <span class="keyword">true</span>;
+            }
+        }
+        
+        <span class="comment">// Si no es dirigido, eliminar también v → u con mismo peso</span>
+        <span class="keyword">if</span> (!isDirected && adj.ContainsKey(v)) {
+            <span class="keyword">int</span> index = adj[v].FindIndex(e =&gt; 
+                EqualityComparer&lt;T&gt;.Default.Equals(e.to, u) 
+                && Math.Abs(e.weight - weight) &lt; <span class="number">0.0001</span>);
+            
+            <span class="keyword">if</span> (index &gt;= <span class="number">0</span>) {
+                adj[v].RemoveAt(index);
+            }
+        }
+        
+        <span class="keyword">return</span> removed;
+    }
+
+    <span class="comment">/// &lt;summary&gt;
+    /// Elimina un vértice y todas sus aristas asociadas.
+    /// Complejidad: O(n * m) en el peor caso
+    /// &lt;/summary&gt;</span>
+    <span class="keyword">public</span> <span class="keyword">bool</span> RemoveVertex(T v) {
+        <span class="keyword">if</span> (!adj.ContainsKey(v)) {
+            <span class="keyword">return</span> <span class="keyword">false</span>;
+        }
+        
+        <span class="comment">// Eliminar todas las aristas que apuntan a v</span>
+        <span class="keyword">foreach</span> (<span class="keyword">var</span> u <span class="keyword">in</span> adj.Keys) {
+            adj[u].RemoveAll(e =&gt; EqualityComparer&lt;T&gt;.Default.Equals(e.to, v));
+        }
+        
+        <span class="comment">// Eliminar el vértice en sí</span>
+        adj.Remove(v);
+        <span class="keyword">return</span> <span class="keyword">true</span>;
+    }
+
+    <span class="comment">/// &lt;summary&gt;
+    /// Obtiene todos los vértices del grafo.
+    /// &lt;/summary&gt;</span>
+    <span class="keyword">public</span> IEnumerable&lt;T&gt; Vertices() =&gt; adj.Keys;
+
+    <span class="comment">/// &lt;summary&gt;
+    /// Cuenta el número total de vértices.
+    /// &lt;/summary&gt;</span>
+    <span class="keyword">public</span> <span class="keyword">int</span> VertexCount() =&gt; adj.Count;
+
+    <span class="comment">/// &lt;summary&gt;
+    /// Cuenta el número total de aristas (incluyendo multiaristas).
+    /// En multigrafos, cada arista u→v con diferente peso cuenta por separado.
+    /// &lt;/summary&gt;</span>
+    <span class="keyword">public</span> <span class="keyword">int</span> EdgeCount() {
+        <span class="keyword">int</span> count = adj.Values.Sum(list =&gt; list.Count);
+        <span class="comment">// Si no es dirigido, cada arista se cuenta dos veces</span>
+        <span class="keyword">return</span> isDirected ? count : count / <span class="number">2</span>;
+    }
+
+    <span class="comment">/// &lt;summary&gt;
+    /// Obtiene todas las aristas entre dos vértices (útil para multigrafos).
+    /// Retorna lista de pesos de todas las aristas u→v.
+    /// &lt;/summary&gt;</span>
+    <span class="keyword">public</span> List&lt;<span class="keyword">double</span>&gt; GetEdgeWeights(T u, T v) {
+        <span class="keyword">if</span> (!adj.ContainsKey(u)) {
+            <span class="keyword">return</span> <span class="keyword">new</span> List&lt;<span class="keyword">double</span>&gt;();
+        }
+        
+        <span class="keyword">return</span> adj[u]
+            .Where(e =&gt; EqualityComparer&lt;T&gt;.Default.Equals(e.to, v))
+            .Select(e =&gt; e.weight)
+            .ToList();
+    }
+
+    <span class="comment">/// &lt;summary&gt;
+    /// Imprime el grafo de forma legible.
+    /// &lt;/summary&gt;</span>
+    <span class="keyword">public</span> <span class="keyword">void</span> Print() {
+        Console.WriteLine($<span class="string">"Grafo {(isDirected ? "</span>dirigido<span class="string">" : "</span>no dirigido<span class="string">")} con {VertexCount()} vértices y {EdgeCount()} aristas:"</span>);
+        <span class="keyword">foreach</span> (<span class="keyword">var</span> u <span class="keyword">in</span> adj.Keys) {
+            Console.Write($<span class="string">"{u} → "</span>);
+            <span class="keyword">foreach</span> (<span class="keyword">var</span> (v, w) <span class="keyword">in</span> adj[u]) {
+                Console.Write($<span class="string">"({v}, {w:F1}) "</span>);
+            }
+            Console.WriteLine();
+        }
+    }
+}</div>
+      </div>
+
+      <h3>Ejemplo de Uso: Mapa de Ciudad</h3>
+      <div class="code-container">
+        <div class="code-header"><span>Programa Principal</span></div>
+        <div class="code-content"><span class="keyword">class</span> Program {
+    <span class="keyword">static</span> <span class="keyword">void</span> Main() {
+        Console.WriteLine(<span class="string">"=== MAPA DE CIUDAD - Red de Transporte ===\n"</span>);
+        
+        <span class="comment">// Crear grafo MIXTO (tendrá aristas dirigidas y no dirigidas)</span>
+        <span class="comment">// Para simplicidad, usamos un grafo dirigido y agregamos aristas en ambas direcciones</span>
+        <span class="comment">// cuando la calle es bidireccional</span>
+        <span class="keyword">var</span> ciudad = <span class="keyword">new</span> Graph&lt;<span class="keyword">string</span>&gt;(directed: <span class="keyword">true</span>);
+        
+        <span class="comment">// === ARISTAS NO DIRIGIDAS (bidireccionales) ===</span>
+        <span class="comment">// Agregamos en ambas direcciones manualmente</span>
+        
+        <span class="comment">// A ↔ B: 2.0 km</span>
+        ciudad.AddEdge(<span class="string">"A"</span>, <span class="string">"B"</span>, <span class="number">2.0</span>);
+        ciudad.AddEdge(<span class="string">"B"</span>, <span class="string">"A"</span>, <span class="number">2.0</span>);
+        
+        <span class="comment">// A ↔ C: 3.0 km</span>
+        ciudad.AddEdge(<span class="string">"A"</span>, <span class="string">"C"</span>, <span class="number">3.0</span>);
+        ciudad.AddEdge(<span class="string">"C"</span>, <span class="string">"A"</span>, <span class="number">3.0</span>);
+        
+        <span class="comment">// B ↔ D: 1.0 km</span>
+        ciudad.AddEdge(<span class="string">"B"</span>, <span class="string">"D"</span>, <span class="number">1.0</span>);
+        ciudad.AddEdge(<span class="string">"D"</span>, <span class="string">"B"</span>, <span class="number">1.0</span>);
+        
+        <span class="comment">// C ↔ E: 4.0 km</span>
+        ciudad.AddEdge(<span class="string">"C"</span>, <span class="string">"E"</span>, <span class="number">4.0</span>);
+        ciudad.AddEdge(<span class="string">"E"</span>, <span class="string">"C"</span>, <span class="number">4.0</span>);
+        
+        <span class="comment">// D ↔ F: 5.0 km</span>
+        ciudad.AddEdge(<span class="string">"D"</span>, <span class="string">"F"</span>, <span class="number">5.0</span>);
+        ciudad.AddEdge(<span class="string">"F"</span>, <span class="string">"D"</span>, <span class="number">5.0</span>);
+        
+        <span class="comment">// E ↔ F: 2.0 km (IMPORTANTE: ruta bidireccional corta)</span>
+        ciudad.AddEdge(<span class="string">"E"</span>, <span class="string">"F"</span>, <span class="number">2.0</span>);
+        ciudad.AddEdge(<span class="string">"F"</span>, <span class="string">"E"</span>, <span class="number">2.0</span>);
+        
+        <span class="comment">// G ↔ H: 6.0 km</span>
+        ciudad.AddEdge(<span class="string">"G"</span>, <span class="string">"H"</span>, <span class="number">6.0</span>);
+        ciudad.AddEdge(<span class="string">"H"</span>, <span class="string">"G"</span>, <span class="number">6.0</span>);
+        
+        <span class="comment">// === ARISTAS DIRIGIDAS (un solo sentido) ===</span>
+        ciudad.AddEdge(<span class="string">"A"</span>, <span class="string">"G"</span>, <span class="number">1.0</span>);  <span class="comment">// al hospital</span>
+        ciudad.AddEdge(<span class="string">"B"</span>, <span class="string">"H"</span>, <span class="number">3.0</span>);  <span class="comment">// al estadio</span>
+        ciudad.AddEdge(<span class="string">"C"</span>, <span class="string">"D"</span>, <span class="number">2.0</span>);
+        ciudad.AddEdge(<span class="string">"F"</span>, <span class="string">"E"</span>, <span class="number">4.0</span>);  <span class="comment">// RUTA ALTERNA más larga</span>
+        ciudad.AddEdge(<span class="string">"H"</span>, <span class="string">"A"</span>, <span class="number">5.0</span>);  <span class="comment">// vuelta al centro</span>
+        
+        <span class="comment">// Imprimir el grafo completo</span>
+        ciudad.Print();
+        
+        <span class="comment">// === ANÁLISIS DEL PROBLEMA E-F ===</span>
+        Console.WriteLine(<span class="string">"\n=== ANÁLISIS: Conexión E-F (Multigrafo) ===\n"</span>);
+        Console.WriteLine(<span class="string">"Observa que hay MÚLTIPLES rutas entre E y F:"</span>);
+        Console.WriteLine($<span class="string">"  E→F existe? {ciudad.HasEdge("</span>E<span class="string">", "</span>F<span class="string">")} (ruta bidireccional corta: 2.0 km)"</span>);
+        Console.WriteLine($<span class="string">"  F→E existe? {ciudad.HasEdge("</span>F<span class="string">", "</span>E<span class="string">")} (MÚLTIPLES rutas disponibles)"</span>);
+        
+        <span class="comment">// Obtener todas las rutas F→E</span>
+        <span class="keyword">var</span> rutasFE = ciudad.GetEdgeWeights(<span class="string">"F"</span>, <span class="string">"E"</span>);
+        Console.WriteLine($<span class="string">"\nRutas disponibles F→E: {rutasFE.Count}"</span>);
+        <span class="keyword">foreach</span> (<span class="keyword">var</span> peso <span class="keyword">in</span> rutasFE) {
+            Console.WriteLine($<span class="string">"  • Ruta con distancia: {peso} km"</span>);
+        }
+        
+        Console.WriteLine(<span class="string">"\n📚 Concepto de MULTIGRAFO:"</span>);
+        Console.WriteLine(<span class="string">"   Permite múltiples aristas entre el mismo par de vértices."</span>);
+        Console.WriteLine(<span class="string">"   Interpretación práctica:"</span>);
+        Console.WriteLine(<span class="string">"   - Ruta 1 (2.0 km): Carretera local bidireccional"</span>);
+        Console.WriteLine(<span class="string">"   - Ruta 2 (4.0 km): Autopista de cuota (más larga, quizá más rápida)"</span>);
+        
+        <span class="comment">// Consultas adicionales</span>
+        Console.WriteLine(<span class="string">"\n=== CONSULTAS GENERALES ===\n"</span>);
+        Console.WriteLine($<span class="string">"¿Puedo ir de A al Hospital (G)? {ciudad.HasEdge("</span>A<span class="string">", "</span>G<span class="string">")} (dirigida)"</span>);
+        Console.WriteLine($<span class="string">"¿Puedo volver de G a A? {ciudad.HasEdge("</span>G<span class="string">", "</span>A<span class="string">")} (NO hay ruta directa)"</span>);
+        
+        <span class="comment">// Verificar arista específica por peso</span>
+        Console.WriteLine($<span class="string">"\n¿Existe F→E con 2.0 km? {ciudad.HasEdgeWithWeight("</span>F<span class="string">", "</span>E<span class="string">", </span><span class="number">2.0</span><span class="string">)}"</span>);
+        Console.WriteLine($<span class="string">"¿Existe F→E con 4.0 km? {ciudad.HasEdgeWithWeight("</span>F<span class="string">", "</span>E<span class="string">", </span><span class="number">4.0</span><span class="string">)}"</span>);
+        
+        <span class="comment">// Análisis de grados</span>
+        Console.WriteLine(<span class="string">"\n=== ANÁLISIS DE GRADOS ===\n"</span>);
+        <span class="keyword">var</span> zonas = <span class="keyword">new</span>[] { <span class="string">"A"</span>, <span class="string">"B"</span>, <span class="string">"C"</span>, <span class="string">"D"</span>, <span class="string">"E"</span>, <span class="string">"F"</span>, <span class="string">"G"</span>, <span class="string">"H"</span> };
+        <span class="keyword">foreach</span> (<span class="keyword">var</span> zona <span class="keyword">in</span> zonas) {
+            Console.WriteLine($<span class="string">"Zona {zona}: salida={ciudad.OutDegree(zona)}, entrada={ciudad.InDegree(zona)}"</span>);
+        }
+        
+        <span class="comment">// Listar destinos desde el Centro Comercial</span>
+        Console.WriteLine(<span class="string">"\n=== DESTINOS DESDE CENTRO COMERCIAL (A) ===\n"</span>);
+        <span class="keyword">foreach</span> (<span class="keyword">var</span> (destino, dist) <span class="keyword">in</span> ciudad.Neighbors(<span class="string">"A"</span>)) {
+            Console.WriteLine($<span class="string">"  → Zona {destino} a {dist} km"</span>);
+        }
+    }
+}</div>
+      </div>
+
+      <div class="note">
+<strong>Salida esperada (parcial):</strong>
+
+=== MAPA DE CIUDAD - Red de Transporte ===
+
+Grafo dirigido con 8 vértices y 19 aristas:
+A → (B, 2.0) (C, 3.0) (G, 1.0) 
+B → (A, 2.0) (D, 1.0) (H, 3.0) 
+C → (A, 3.0) (E, 4.0) (D, 2.0) 
+D → (B, 1.0) (F, 5.0) 
+E → (C, 4.0) (F, 2.0) 
+F → (D, 5.0) (E, 2.0) (E, 4.0)  ← MULTIARISTAS: Dos rutas F→E
+G → (H, 6.0) 
+H → (G, 6.0) (A, 5.0) 
+
+=== ANÁLISIS: Conexión E-F (Multigrafo) ===
+
+Observa que hay MÚLTIPLES rutas entre E y F:
+  E→F existe? True (ruta bidireccional corta: 2.0 km)
+  F→E existe? True (MÚLTIPLES rutas disponibles)
+
+Rutas disponibles F→E: 2
+  • Ruta con distancia: 2.0 km
+  • Ruta con distancia: 4.0 km
+
+📚 Concepto de MULTIGRAFO:
+   Permite múltiples aristas entre el mismo par de vértices.
+   Interpretación práctica:
+   - Ruta 1 (2.0 km): Carretera local bidireccional
+   - Ruta 2 (4.0 km): Autopista de cuota (más larga, quizá más rápida)
+
+=== CONSULTAS GENERALES ===
+
+¿Puedo ir de A al Hospital (G)? True (dirigida)
+¿Puedo volver de G a A? False (NO hay ruta directa)
+
+¿Existe F→E con 2.0 km? True
+¿Existe F→E con 4.0 km? True
+
+=== ANÁLISIS DE GRADOS ===
+
+Zona A: salida=3, entrada=2
+Zona B: salida=3, entrada=1
+Zona C: salida=3, entrada=1
+Zona D: salida=2, entrada=2
+Zona E: salida=2, entrada=3  ← NOTA: entrada=3 por las DOS rutas desde F
+Zona F: salida=3, entrada=2  ← NOTA: salida=3 incluye DOS rutas a E (multiaristas)
+Zona G: salida=1, entrada=1
+Zona H: salida=2, entrada=1
+      </div>
+
+      <button class="btn" onclick="showSection('py')">Ver Solución en Python →</button>
+    </section>
+
+    <!-- IMPLEMENTACIÓN PYTHON -->
+    <section id="py" class="section">
+      <h2>🐍 Solución Completa en Python</h2>
+      
+      <h3>Módulo de Grafo con Carga desde Archivo</h3>
+      <div class="code-container">
+        <div class="code-header"><span>Python • grafo.py</span><span>Lista de adyacencia</span></div>
+        <div class="code-content"><span class="comment"># -*- coding: utf-8 -*-</span>
+<span class="string">"""
+Módulo para trabajar con grafos usando lista de adyacencia.
+Soporta carga desde archivos de texto.
+"""</span>
+
+<span class="keyword">from</span> collections <span class="keyword">import</span> defaultdict
+<span class="keyword">from</span> typing <span class="keyword">import</span> Dict, List, Tuple, Optional
+
+<span class="comment"># Tipo para representar el grafo: Dict[vértice, List[(vecino, peso)]]</span>
+Graph = Dict[<span class="keyword">str</span>, List[Tuple[<span class="keyword">str</span>, <span class="keyword">float</span>]]]
+
+
+<span class="keyword">def</span> create_graph(directed: <span class="keyword">bool</span> = <span class="keyword">True</span>) -&gt; Graph:
+    <span class="string">"""
+    Crea un nuevo grafo vacío.
+    
+    Args:
+        directed: True para grafo dirigido, False para no dirigido
+    
+    Returns:
+        Diccionario que representa el grafo
+    """</span>
+    <span class="comment"># defaultdict crea listas vacías automáticamente</span>
+    graph = defaultdict(<span class="keyword">list</span>)
+    <span class="comment"># Guardamos el tipo de grafo como atributo</span>
+    graph._directed = directed
+    <span class="keyword">return</span> graph
+
+
+<span class="keyword">def</span> add_vertex(graph: Graph, v: <span class="keyword">str</span>) -&gt; <span class="keyword">None</span>:
+    <span class="string">"""
+    Agrega un vértice al grafo si no existe.
+    Complejidad: O(1)
+    
+    Args:
+        graph: El grafo donde agregar
+        v: Identificador del vértice
+    """</span>
+    <span class="keyword">if</span> v <span class="keyword">not</span> <span class="keyword">in</span> graph:
+        graph[v] = []
+
+
+<span class="keyword">def</span> add_edge(adj, u, v, w=<span class="number">1.0</span>, directed=<span class="keyword">True</span>):
+    <span class="string">"""
+    Agrega una arista al grafo.
+    SOPORTA MULTIARISTAS: Permite múltiples aristas entre (u,v) con diferentes pesos.
+    Previene solo aristas IDÉNTICAS (mismo destino Y mismo peso).
+    Complejidad: O(grado(u)) por verificación de duplicados exactos
+    
+    Args:
+        adj: El grafo donde agregar
+        u: Vértice origen
+        v: Vértice destino
+        w: Peso de la arista (default: 1.0)
+        directed: Si el grafo es dirigido o no
+    """</span>
+    <span class="comment"># Asegurar que ambos vértices existan</span>
+    add_vertex(adj, u)
+    add_vertex(adj, v)
+    
+    <span class="comment"># CRUCIAL: Verificar duplicados por (destino, peso)</span>
+    <span class="comment"># Esto permite F→E (2.0) y F→E (4.0) coexistir (multigrafo)</span>
+    <span class="comment"># pero previene F→E (2.0) duplicado</span>
+    <span class="keyword">if</span> <span class="keyword">not</span> <span class="keyword">any</span>((neighbor, weight) == (v, w) <span class="keyword">for</span> neighbor, weight <span class="keyword">in</span> adj[u]):
+        adj[u].append((v, w))
+    
+    <span class="comment"># Si el grafo NO es dirigido, agregar arista inversa</span>
+    <span class="keyword">if</span> <span class="keyword">not</span> directed:
+        <span class="keyword">if</span> <span class="keyword">not</span> <span class="keyword">any</span>((neighbor, weight) == (u, w) <span class="keyword">for</span> neighbor, weight <span class="keyword">in</span> adj[v]):
+            adj[v].append((u, w))
+
+
+<span class="keyword">def</span> has_edge(adj, u, v) -&gt; <span class="keyword">bool</span>:
+    <span class="string">"""
+    Verifica si existe AL MENOS UNA arista entre u y v.
+    En multigrafos, retorna True si hay cualquier arista u→v (sin importar el peso).
+    Complejidad: O(grado(u))
+    
+    Args:
+        adj: El grafo a consultar
+        u: Vértice origen
+        v: Vértice destino
+    
+    Returns:
+        True si existe alguna arista, False en caso contrario
+    """</span>
+    <span class="keyword">if</span> u <span class="keyword">not</span> <span class="keyword">in</span> adj:
+        <span class="keyword">return</span> <span class="keyword">False</span>
+    
+    <span class="comment"># Buscar cualquier arista al destino v</span>
+    <span class="keyword">return</span> <span class="keyword">any</span>(neighbor == v <span class="keyword">for</span> neighbor, w <span class="keyword">in</span> adj[u])
+
+
+<span class="keyword">def</span> has_edge_with_weight(adj, u, v, weight) -&gt; <span class="keyword">bool</span>:
+    <span class="string">"""
+    Verifica si existe una arista específica entre u y v con el peso exacto.
+    Útil para multigrafos donde pueden existir múltiples aristas u→v.
+    Complejidad: O(grado(u))
+    
+    Args:
+        adj: El grafo a consultar
+        u: Vértice origen
+        v: Vértice destino
+        weight: Peso exacto a buscar
+    
+    Returns:
+        True si existe la arista con ese peso exacto
+    """</span>
+    <span class="keyword">if</span> u <span class="keyword">not</span> <span class="keyword">in</span> adj:
+        <span class="keyword">return</span> <span class="keyword">False</span>
+    
+    <span class="comment"># Buscar arista específica con el peso exacto (tolerancia para flotantes)</span>
+    <span class="keyword">return</span> <span class="keyword">any</span>((neighbor, w) == (v, weight) <span class="keyword">for</span> neighbor, w <span class="keyword">in</span> adj[u])
+
+
+<span class="keyword">def</span> get_edge_weights(adj, u, v) -&gt; List[<span class="keyword">float</span>]:
+    <span class="string">"""
+    Obtiene todos los pesos de las aristas entre u y v.
+    Útil para multigrafos para listar todas las rutas alternativas.
+    Complejidad: O(grado(u))
+    
+    Args:
+        adj: El grafo a consultar
+        u: Vértice origen
+        v: Vértice destino
+    
+    Returns:
+        Lista de pesos de todas las aristas u→v
+    """</span>
+    <span class="keyword">if</span> u <span class="keyword">not</span> <span class="keyword">in</span> adj:
+        <span class="keyword">return</span> []
+    
+    <span class="keyword">return</span> [w <span class="keyword">for</span> neighbor, w <span class="keyword">in</span> adj[u] <span class="keyword">if</span> neighbor == v]
+
+
+<span class="keyword">def</span> neighbors(graph: Graph, u: <span class="keyword">str</span>) -&gt; List[Tuple[<span class="keyword">str</span>, <span class="keyword">float</span>]]:
+    <span class="string">"""
+    Obtiene todos los vecinos de un vértice.
+    Complejidad: O(1)
+    
+    Args:
+        graph: El grafo a consultar
+        u: Vértice a consultar
+    
+    Returns:
+        Lista de tuplas (vecino, peso)
+    
+    Raises:
+        KeyError: Si el vértice no existe
+    """</span>
+    <span class="keyword">if</span> u <span class="keyword">not</span> <span class="keyword">in</span> graph:
+        <span class="keyword">raise</span> KeyError(<span class="string">f"Vértice {u} no existe en el grafo"</span>)
+    <span class="keyword">return</span> graph[u]
+
+
+<span class="keyword">def</span> out_degree(graph: Graph, u: <span class="keyword">str</span>) -&gt; <span class="keyword">int</span>:
+    <span class="string">"""
+    Calcula el grado de salida de un vértice.
+    Complejidad: O(1)
+    
+    Args:
+        graph: El grafo a consultar
+        u: Vértice a consultar
+    
+    Returns:
+        Número de aristas salientes
+    """</span>
+    <span class="keyword">return</span> <span class="keyword">len</span>(graph.get(u, []))
+
+
+<span class="keyword">def</span> in_degree(graph: Graph, v: <span class="keyword">str</span>) -&gt; <span class="keyword">int</span>:
+    <span class="string">"""
+    Calcula el grado de entrada de un vértice.
+    IMPORTANTE: Necesario para grafos dirigidos.
+    Complejidad: O(n + m)
+    
+    Args:
+        graph: El grafo a consultar
+        v: Vértice a consultar
+    
+    Returns:
+        Número de aristas entrantes
+    """</span>
+    count = <span class="number">0</span>
+    <span class="comment"># Revisar todos los vértices</span>
+    <span class="keyword">for</span> u <span class="keyword">in</span> graph:
+        <span class="comment"># Contar cuántas veces aparece v en la lista de vecinos de u</span>
+        count += <span class="keyword">sum</span>(<span class="number">1</span> <span class="keyword">for</span> neighbor, w <span class="keyword">in</span> graph[u] <span class="keyword">if</span> neighbor == v)
+    <span class="keyword">return</span> count
+
+
+<span class="keyword">def</span> remove_edge(adj, u, v) -&gt; <span class="keyword">int</span>:
+    <span class="string">"""
+    Elimina TODAS las aristas de u a v (todas las multiaristas si existen).
+    Complejidad: O(grado(u))
+    
+    Args:
+        adj: El grafo a modificar
+        u: Vértice origen
+        v: Vértice destino
+    
+    Returns:
+        Número de aristas eliminadas
+    """</span>
+    removed = <span class="number">0</span>
+    
+    <span class="comment"># Contar cuántas se eliminarán</span>
+    <span class="keyword">if</span> u <span class="keyword">in</span> adj:
+        removed = <span class="keyword">sum</span>(<span class="number">1</span> <span class="keyword">for</span> neighbor, w <span class="keyword">in</span> adj[u] <span class="keyword">if</span> neighbor == v)
+        <span class="comment"># Eliminar todas las aristas u → v</span>
+        adj[u] = [(neighbor, w) <span class="keyword">for</span> neighbor, w <span class="keyword">in</span> adj[u] <span class="keyword">if</span> neighbor != v]
+    
+    <span class="comment"># Si no es dirigido, eliminar también todas v → u</span>
+    <span class="keyword">if</span> <span class="keyword">not</span> adj._directed <span class="keyword">and</span> v <span class="keyword">in</span> adj:
+        adj[v] = [(neighbor, w) <span class="keyword">for</span> neighbor, w <span class="keyword">in</span> adj[v] <span class="keyword">if</span> neighbor != u]
+    
+    <span class="keyword">return</span> removed
+
+
+<span class="keyword">def</span> remove_edge_with_weight(adj, u, v, weight) -&gt; <span class="keyword">bool</span>:
+    <span class="string">"""
+    Elimina UNA arista específica de u a v con el peso exacto.
+    En multigrafos, solo elimina la primera coincidencia.
+    Complejidad: O(grado(u))
+    
+    Args:
+        adj: El grafo a modificar
+        u: Vértice origen
+        v: Vértice destino
+        weight: Peso exacto de la arista a eliminar
+    
+    Returns:
+        True si se eliminó, False si no existía
+    """</span>
+    <span class="keyword">if</span> u <span class="keyword">not</span> <span class="keyword">in</span> adj:
+        <span class="keyword">return</span> <span class="keyword">False</span>
+    
+    <span class="comment"># Buscar la arista específica</span>
+    <span class="keyword">for</span> i, (neighbor, w) <span class="keyword">in</span> <span class="keyword">enumerate</span>(adj[u]):
+        <span class="keyword">if</span> neighbor == v <span class="keyword">and</span> w == weight:
+            <span class="comment"># Eliminar esta arista específica</span>
+            <span class="keyword">del</span> adj[u][i]
+            
+            <span class="comment"># Si no es dirigido, eliminar también v → u con mismo peso</span>
+            <span class="keyword">if</span> <span class="keyword">not</span> adj._directed <span class="keyword">and</span> v <span class="keyword">in</span> adj:
+                <span class="keyword">for</span> j, (n, w2) <span class="keyword">in</span> <span class="keyword">enumerate</span>(adj[v]):
+                    <span class="keyword">if</span> n == u <span class="keyword">and</span> w2 == weight:
+                        <span class="keyword">del</span> adj[v][j]
+                        <span class="keyword">break</span>
+            
+            <span class="keyword">return</span> <span class="keyword">True</span>
+    
+    <span class="keyword">return</span> <span class="keyword">False</span>
+
+
+<span class="keyword">def</span> load_graph(path: <span class="keyword">str</span>, directed: <span class="keyword">bool</span> = <span class="keyword">True</span>) -&gt; Graph:
+    <span class="string">"""
+    Carga un grafo desde un archivo de texto.
+    
+    Formato del archivo:
+        # Comentarios (líneas que empiezan con #)
+        u v peso
+        u v peso
+        ...
+    
+    Complejidad: O(m * grado_promedio) donde m = número de aristas
+    
+    Args:
+        path: Ruta al archivo
+        directed: True para grafo dirigido, False para no dirigido
+    
+    Returns:
+        Grafo cargado desde el archivo
+    
+    Raises:
+        FileNotFoundError: Si el archivo no existe
+        ValueError: Si hay líneas con formato inválido
+    """</span>
+    graph = create_graph(directed)
+    
+    <span class="keyword">try</span>:
+        <span class="keyword">with</span> <span class="keyword">open</span>(path, <span class="string">'r'</span>, encoding=<span class="string">'utf-8'</span>) <span class="keyword">as</span> f:
+            <span class="keyword">for</span> line_num, line <span class="keyword">in</span> <span class="keyword">enumerate</span>(f, <span class="number">1</span>):
+                <span class="comment"># Eliminar espacios en blanco al inicio y final</span>
+                line = line.strip()
+                
+                <span class="comment"># Ignorar líneas vacías y comentarios</span>
+                <span class="keyword">if</span> <span class="keyword">not</span> line <span class="keyword">or</span> line.startswith(<span class="string">'#'</span>):
+                    <span class="keyword">continue</span>
+                
+                <span class="comment"># Dividir la línea en partes</span>
+                parts = line.split()
+                
+                <span class="comment"># Validar formato mínimo: u v [peso]</span>
+                <span class="keyword">if</span> <span class="keyword">len</span>(parts) &lt; <span class="number">2</span>:
+                    <span class="keyword">raise</span> ValueError(<span class="string">f"Línea {line_num}: formato inválido '{line}'"</span>)
+                
+                <span class="comment"># Extraer vértices</span>
+                u, v = parts[<span class="number">0</span>], parts[<span class="number">1</span>]
+                
+                <span class="comment"># Extraer peso (opcional, default = 1.0)</span>
+                <span class="keyword">try</span>:
+                    weight = <span class="keyword">float</span>(parts[<span class="number">2</span>]) <span class="keyword">if</span> <span class="keyword">len</span>(parts) &gt; <span class="number">2</span> <span class="keyword">else</span> <span class="number">1.0</span>
+                <span class="keyword">except</span> ValueError:
+                    <span class="keyword">raise</span> ValueError(<span class="string">f"Línea {line_num}: peso inválido '{parts[2]}'"</span>)
+                
+                <span class="comment"># Agregar la arista (con prevención de duplicados)</span>
+                add_edge(graph, u, v, weight)
+        
+        <span class="keyword">return</span> graph
+    
+    <span class="keyword">except</span> FileNotFoundError:
+        <span class="keyword">raise</span> FileNotFoundError(<span class="string">f"No se encontró el archivo: {path}"</span>)
+
+
+<span class="keyword">def</span> print_graph(graph: Graph) -&gt; <span class="keyword">None</span>:
+    <span class="string">"""
+    Imprime el grafo de forma legible.
+    
+    Args:
+        graph: El grafo a imprimir
+    """</span>
+    tipo = <span class="string">"dirigido"</span> <span class="keyword">if</span> graph._directed <span class="keyword">else</span> <span class="string">"no dirigido"</span>
+    num_vertices = <span class="keyword">len</span>(graph)
+    num_aristas = <span class="keyword">sum</span>(<span class="keyword">len</span>(vecinos) <span class="keyword">for</span> vecinos <span class="keyword">in</span> graph.values())
+    <span class="keyword">if</span> <span class="keyword">not</span> graph._directed:
+        num_aristas //= <span class="number">2</span>  <span class="comment"># Cada arista se cuenta dos veces</span>
+    
+    <span class="keyword">print</span>(<span class="string">f"Grafo {tipo} con {num_vertices} vértices y {num_aristas} aristas:"</span>)
+    
+    <span class="keyword">for</span> u <span class="keyword">in</span> <span class="keyword">sorted</span>(graph.keys()):
+        vecinos_str = <span class="string">" "</span>.join(<span class="string">f"({v}, {w:.1f})"</span> <span class="keyword">for</span> v, w <span class="keyword">in</span> graph[u])
+        <span class="keyword">print</span>(<span class="string">f"{u} → {vecinos_str}"</span>)</div>
+      </div>
+
+      <h3>Formato del Archivo de Entrada</h3>
+      <div class="note">
+<strong>Archivo: ciudad.txt</strong>
+
+# Mapa de ciudad - Red de transporte urbano
+# Formato: origen destino distancia_km [tipo]
+# Tipo: B=bidireccional, D=dirigida
+
+# === CALLES BIDIRECCIONALES ===
+# (Se representan agregando la arista en ambas direcciones)
+
+# A ↔ B: 2.0 km
+A B 2.0
+B A 2.0
+
+# A ↔ C: 3.0 km  
+A C 3.0
+C A 3.0
+
+# B ↔ D: 1.0 km
+B D 1.0
+D B 1.0
+
+# C ↔ E: 4.0 km
+C E 4.0
+E C 4.0
+
+# D ↔ F: 5.0 km
+D F 5.0
+F D 5.0
+
+# E ↔ F: 2.0 km (ruta corta)
+E F 2.0
+F E 2.0
+
+# G ↔ H: 6.0 km
+G H 6.0
+H G 6.0
+
+# === CALLES DE UN SOLO SENTIDO ===
+
+A G 1.0
+B H 3.0
+C D 2.0
+F E 4.0
+H A 5.0
+      </div>
+
+      <h3>Programa Principal de Prueba</h3>
+      <div class="code-container">
+        <div class="code-header"><span>main.py</span></div>
+        <div class="code-content"><span class="comment">#!/usr/bin/env python3</span>
+<span class="comment"># -*- coding: utf-8 -*-</span>
+<span class="string">"""
+Mapa de ciudad - Análisis de red de transporte urbano.
+Ejemplo educativo sobre grafos mixtos (dirigidos + no dirigidos).
+"""</span>
+
+<span class="keyword">from</span> grafo <span class="keyword">import</span> *
+
+<span class="keyword">def</span> main():
+    <span class="keyword">print</span>(<span class="string">"="</span> * <span class="number">70</span>)
+    <span class="keyword">print</span>(<span class="string">"MAPA DE CIUDAD - Red de Transporte Urbano"</span>)
+    <span class="keyword">print</span>(<span class="string">"="</span> * <span class="number">70</span>)
+    
+    <span class="comment"># Diccionario de descripciones de zonas</span>
+    zonas_desc = {
+        <span class="string">"A"</span>: <span class="string">"Centro Comercial"</span>,
+        <span class="string">"B"</span>: <span class="string">"Zona Norte"</span>,
+        <span class="string">"C"</span>: <span class="string">"Zona Sur"</span>,
+        <span class="string">"D"</span>: <span class="string">"Este Industrial"</span>,
+        <span class="string">"E"</span>: <span class="string">"Oeste Residencial"</span>,
+        <span class="string">"F"</span>: <span class="string">"Zona Industrial"</span>,
+        <span class="string">"G"</span>: <span class="string">"Hospital"</span>,
+        <span class="string">"H"</span>: <span class="string">"Estadio"</span>
+    }
+    
+    <span class="comment"># Cargar grafo desde archivo</span>
+    <span class="keyword">try</span>:
+        ciudad = load_graph(<span class="string">"ciudad.txt"</span>, directed=<span class="keyword">True</span>)
+        <span class="keyword">print</span>(<span class="string">"\n✓ Grafo cargado exitosamente desde 'ciudad.txt'\n"</span>)
+    <span class="keyword">except</span> FileNotFoundError <span class="keyword">as</span> e:
+        <span class="keyword">print</span>(<span class="string">f"\n✗ Error: {e}"</span>)
+        <span class="keyword">print</span>(<span class="string">"   Asegúrate de tener el archivo 'ciudad.txt' en el directorio actual."</span>)
+        <span class="keyword">return</span>
+    
+    <span class="comment"># Imprimir el grafo completo</span>
+    print_graph(ciudad)
+    
+    <span class="comment"># === ANÁLISIS ESPECIAL: Problema E-F ===</span>
+    <span class="keyword">print</span>(<span class="string">"\n" + "="</span> * <span class="number">70</span>)
+    <span class="keyword">print</span>(<span class="string">"ANÁLISIS ESPECIAL: Conexión E-F (Multigrafo)"</span>)
+    <span class="keyword">print</span>(<span class="string">"="</span> * <span class="number">70</span>)
+    
+    <span class="keyword">print</span>(<span class="string">"\n🔍 Observación importante:"</span>)
+    <span class="keyword">print</span>(<span class="string">"   Hay MÚLTIPLES rutas entre E (Oeste Residencial) y F (Zona Industrial)\n"</span>)
+    
+    <span class="comment"># Obtener todas las rutas E→F</span>
+    rutas_e_f = get_edge_weights(ciudad, <span class="string">"E"</span>, <span class="string">"F"</span>)
+    <span class="keyword">print</span>(<span class="string">f"Rutas desde E→F: {len(rutas_e_f)} ruta(s)"</span>)
+    <span class="keyword">for</span> i, peso <span class="keyword">in</span> <span class="keyword">enumerate</span>(rutas_e_f, <span class="number">1</span>):
+        <span class="keyword">print</span>(<span class="string">f"  {i}. Distancia: {peso:.1f} km"</span>)
+    
+    <span class="comment"># Obtener todas las rutas F→E</span>
+    rutas_f_e = get_edge_weights(ciudad, <span class="string">"F"</span>, <span class="string">"E"</span>)
+    <span class="keyword">print</span>(<span class="string">f"\nRutas desde F→E: {len(rutas_f_e)} ruta(s)"</span>)
+    <span class="keyword">for</span> i, peso <span class="keyword">in</span> <span class="keyword">enumerate</span>(rutas_f_e, <span class="number">1</span>):
+        <span class="keyword">print</span>(<span class="string">f"  {i}. Distancia: {peso:.1f} km"</span>)
+    
+    <span class="keyword">if</span> <span class="keyword">len</span>(rutas_f_e) &gt; <span class="number">1</span>:
+        <span class="keyword">print</span>(<span class="string">"\n⚠️  MÚLTIPLES RUTAS DETECTADAS (Multigrafo):"</span>)
+        <span class="keyword">print</span>(<span class="string">"   📚 Concepto: Esto es un MULTIGRAFO ponderado."</span>)
+        <span class="keyword">print</span>(<span class="string">"       Permite múltiples aristas entre el mismo par de vértices."</span>)
+        <span class="keyword">print</span>(<span class="string">"\n   🚗 Interpretación práctica:"</span>)
+        <span class="keyword">print</span>(<span class="string">f"       - Ruta 1 ({rutas_f_e[0]:.1f} km): Carretera local bidireccional"</span>)
+        <span class="keyword">print</span>(<span class="string">f"       - Ruta 2 ({rutas_f_e[1]:.1f} km): Autopista de cuota (más larga pero quizá más rápida)"</span>)
+    
+    <span class="comment"># === CONSULTAS GENERALES ===</span>
+    <span class="keyword">print</span>(<span class="string">"\n" + "="</span> * <span class="number">70</span>)
+    <span class="keyword">print</span>(<span class="string">"CONSULTAS DE CONECTIVIDAD"</span>)
+    <span class="keyword">print</span>(<span class="string">"="</span> * <span class="number">70</span> + <span class="string">"\n"</span>)
+    
+    consultas = [
+        (<span class="string">"A"</span>, <span class="string">"G"</span>, <span class="string">"¿Puedo ir del Centro al Hospital?"</span>),
+        (<span class="string">"G"</span>, <span class="string">"A"</span>, <span class="string">"¿Puedo volver del Hospital al Centro?"</span>),
+        (<span class="string">"E"</span>, <span class="string">"F"</span>, <span class="string">"¿Existe E→F?"</span>),
+        (<span class="string">"F"</span>, <span class="string">"E"</span>, <span class="string">"¿Existe F→E?"</span>),
+        (<span class="string">"B"</span>, <span class="string">"H"</span>, <span class="string">"¿Puedo ir de Zona Norte al Estadio?"</span>),
+        (<span class="string">"H"</span>, <span class="string">"B"</span>, <span class="string">"¿Puedo volver del Estadio a Zona Norte?"</span>),
+    ]
+    
+    <span class="keyword">for</span> origen, destino, pregunta <span class="keyword">in</span> consultas:
+        existe = has_edge(ciudad, origen, destino)
+        simbolo = <span class="string">"✓"</span> <span class="keyword">if</span> existe <span class="keyword">else</span> <span class="string">"✗"</span>
+        <span class="keyword">print</span>(<span class="string">f"{simbolo} {pregunta}"</span>)
+        <span class="keyword">print</span>(<span class="string">f"   {origen}→{destino}: {'SÍ' if existe else 'NO'}\n"</span>)
+    
+    <span class="comment"># Verificar aristas específicas por peso</span>
+    <span class="keyword">print</span>(<span class="string">"Verificación de aristas específicas por peso:"</span>)
+    <span class="keyword">print</span>(<span class="string">f"  ¿Existe F→E con 2.0 km? {has_edge_with_weight(ciudad, 'F', 'E', 2.0)}"</span>)
+    <span class="keyword">print</span>(<span class="string">f"  ¿Existe F→E con 4.0 km? {has_edge_with_weight(ciudad, 'F', 'E', 4.0)}\n"</span>)
+    
+    <span class="comment"># === ANÁLISIS DE GRADOS ===</span>
+    <span class="keyword">print</span>(<span class="string">"=" * 70</span>)
+    <span class="keyword">print</span>(<span class="string">"ANÁLISIS DE GRADOS (Conectividad)"</span>)
+    <span class="keyword">print</span>(<span class="string">"=" * 70 + "\n"</span>)
+    
+    <span class="keyword">for</span> zona <span class="keyword">in</span> <span class="keyword">sorted</span>(ciudad.keys()):
+        desc = zonas_desc.get(zona, <span class="string">"Desconocida"</span>)
+        out_deg = out_degree(ciudad, zona)
+        in_deg = in_degree(ciudad, zona)
+        
+        <span class="keyword">print</span>(<span class="string">f"Zona {zona} ({desc}):"</span>)
+        <span class="keyword">print</span>(<span class="string">f"  ├─ Grado salida:  {out_deg} (calles que salen)"</span>)
+        <span class="keyword">print</span>(<span class="string">f"  └─ Grado entrada: {in_deg} (calles que llegan)"</span>)
+        
+        <span class="keyword">if</span> out_deg == <span class="number">0</span>:
+            <span class="keyword">print</span>(<span class="string">f"     ⚠️  Zona sin salidas!"</span>)
+        <span class="keyword">if</span> in_deg == <span class="number">0</span>:
+            <span class="keyword">print</span>(<span class="string">f"     ⚠️  Zona inaccesible!"</span>)
+        <span class="keyword">print</span>()
+    
+    <span class="comment"># === RUTAS DESDE CENTRO COMERCIAL ===</span>
+    <span class="keyword">print</span>(<span class="string">"=" * 70</span>)
+    <span class="keyword">print</span>(<span class="string">"RUTAS DIRECTAS DESDE CENTRO COMERCIAL (A)"</span>)
+    <span class="keyword">print</span>(<span class="string">"=" * 70 + "\n"</span>)
+    
+    <span class="keyword">try</span>:
+        <span class="keyword">for</span> destino, distancia <span class="keyword">in</span> neighbors(ciudad, <span class="string">"A"</span>):
+            desc_destino = zonas_desc.get(destino, <span class="string">"Desconocida"</span>)
+            <span class="keyword">print</span>(<span class="string">f"  → Zona {destino} ({desc_destino}) a {distancia:.1f} km"</span>)
+    <span class="keyword">except</span> KeyError:
+        <span class="keyword">print</span>(<span class="string">"  ✗ No se encontró la zona A"</span>)
+    
+    <span class="comment"># === PRUEBA DE ELIMINACIÓN ===</span>
+    <span class="keyword">print</span>(<span class="string">"\n" + "=" * 70</span>)
+    <span class="keyword">print</span>(<span class="string">"PRUEBA: Cierre temporal de calle por mantenimiento"</span>)
+    <span class="keyword">print</span>(<span class="string">"=" * 70 + "\n"</span>)
+    
+    <span class="keyword">print</span>(<span class="string">"Cerrando calle C→D (Zona Sur → Este Industrial)..."</span>)
+    removed = remove_edge(ciudad, <span class="string">"C"</span>, <span class="string">"D"</span>)
+    <span class="keyword">print</span>(<span class="string">f"Resultado: {'✓ Eliminada' if removed else '✗ No existía'}\n"</span>)
+    
+    <span class="keyword">print</span>(<span class="string">"Estado de la red después del cierre:"</span>)
+    <span class="keyword">print</span>(<span class="string">f"  C→D: {'Existe' if has_edge(ciudad, 'C', 'D') else 'CERRADA'}"</span>)
+    <span class="keyword">print</span>(<span class="string">f"  D→C: {'Existe' if has_edge(ciudad, 'D', 'C') else 'Cerrada'} (bidireccional no afectada)"</span>)
+    
+    <span class="keyword">print</span>(<span class="string">"\n✓ Análisis completado."</span>)
+
+
+<span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:
+    main()</div>
+      </div>
+
+      <div class="note">
+<strong>Salida esperada (fragmento clave):</strong>
+
+======================================================================
+MAPA DE CIUDAD - Red de Transporte Urbano
+======================================================================
+
+✓ Grafo cargado exitosamente desde 'ciudad.txt'
+
+Grafo dirigido con 8 vértices y 19 aristas:
+A → (B, 2.0) (C, 3.0) (G, 1.0) 
+B → (A, 2.0) (D, 1.0) (H, 3.0) 
+C → (A, 3.0) (E, 4.0) (D, 2.0) 
+D → (B, 1.0) (F, 5.0) 
+E → (C, 4.0) (F, 2.0) 
+F → (D, 5.0) (E, 2.0) (E, 4.0)  ← MULTIARISTAS: Dos rutas F→E
+G → (H, 6.0) 
+H → (G, 6.0) (A, 5.0) 
+
+======================================================================
+ANÁLISIS ESPECIAL: Conexión E-F (Multigrafo)
+======================================================================
+
+🔍 Observación importante:
+   Hay MÚLTIPLES rutas entre E (Oeste Residencial) y F (Zona Industrial)
+
+Rutas desde E→F: 1 ruta(s)
+  1. Distancia: 2.0 km
+
+Rutas desde F→E: 2 ruta(s)
+  1. Distancia: 2.0 km
+  2. Distancia: 4.0 km
+
+⚠️  MÚLTIPLES RUTAS DETECTADAS (Multigrafo):
+   📚 Concepto: Esto es un MULTIGRAFO ponderado.
+       Permite múltiples aristas entre el mismo par de vértices.
+
+   🚗 Interpretación práctica:
+       - Ruta 1 (2.0 km): Carretera local bidireccional
+       - Ruta 2 (4.0 km): Autopista de cuota (más larga pero quizá más rápida)
+
+======================================================================
+CONSULTAS DE CONECTIVIDAD
+======================================================================
+
+✓ ¿Puedo ir del Centro al Hospital?
+   A→G: SÍ
+
+✗ ¿Puedo volver del Hospital al Centro?
+   G→A: NO
+
+✓ ¿Existe E→F?
+   E→F: SÍ
+
+✓ ¿Existe F→E?
+   F→E: SÍ
+
+Verificación de aristas específicas por peso:
+  ¿Existe F→E con 2.0 km? True
+  ¿Existe F→E con 4.0 km? True
+
+======================================================================
+ANÁLISIS DE GRADOS (Conectividad)
+======================================================================
+
+Zona A (Centro Comercial):
+  ├─ Grado salida:  3 (calles que salen)
+  └─ Grado entrada: 2 (calles que llegan)
+
+Zona E (Oeste Residencial):
+  ├─ Grado salida:  2 (calles que salen)
+  └─ Grado entrada: 3 (calles que llegan)  ← DOS rutas desde F
+
+Zona F (Zona Industrial):
+  ├─ Grado salida:  3 (calles que salen)  ← DOS rutas hacia E
+  └─ Grado entrada: 2 (calles que llegan)
+      </div>
+
+      <button class="btn" onclick="showSection('actividades')">Ir a Actividades →</button>
+    </section>
+
+    <!-- ACTIVIDADES -->
+    <section id="actividades" class="section">
+      <h2>🧪 Actividades Prácticas</h2>
+      
+      <div class="activity">
+        <h4>Actividad 1: Análisis del Mapa de Ciudad</h4>
+        <p><strong>Objetivo:</strong> Comprender el grafo mixto del ejemplo</p>
+        <ol>
+          <li>Dibuja en papel el grafo completo de la ciudad (vértices A-H).</li>
+          <li>Usa <strong>líneas dobles</strong> para aristas bidireccionales y <strong>flechas</strong> para dirigidas.</li>
+          <li>Identifica:
+            <ul>
+              <li>¿Cuáles zonas están completamente aisladas? (sin conexiones bidireccionales al resto)</li>
+              <li>¿Desde qué zona(s) puedes llegar a todas las demás?</li>
+              <li>El problema E-F: ¿cuántas formas hay de ir de F a E? Márcalas con diferentes colores.</li>
+            </ul>
+          </li>
+        </ol>
+      </div>
+
+      <div class="activity">
+        <h4>Actividad 2: Implementación en C#</h4>
+        <p><strong>Objetivo:</strong> Aplicar la clase Graph al mapa de ciudad</p>
+        <ol>
+          <li>Crea un proyecto de consola en C#.</li>
+          <li>Copia la clase <code>Graph&lt;T&gt;</code> completa.</li>
+          <li>Implementa el mapa de ciudad exactamente como se muestra en el ejemplo.</li>
+          <li>Agrega las siguientes consultas personalizadas:
+            <ul>
+              <li>Imprime todas las zonas con grado de entrada = 0 (inaccesibles)</li>
+              <li>Imprime todas las zonas con grado de salida = 0 (sin salidas)</li>
+              <li>Calcula la distancia total de todas las aristas del grafo</li>
+              <li>Encuentra el vértice con mayor grado de salida</li>
+            </ul>
+          </li>
+        </ol>
+      </div>
+
+      <div class="activity">
+        <h4>Actividad 3: Archivo de Aristas y Python</h4>
+        <p><strong>Objetivo:</strong> Cargar el mapa desde archivo y analizarlo</p>
+        <ol>
+          <li>Crea el archivo <code>ciudad.txt</code> con todas las aristas mostradas en el ejemplo.</li>
+          <li>Copia el módulo <code>grafo.py</code> completo.</li>
+          <li>Ejecuta el programa <code>main.py</code> y verifica la salida.</li>
+          <li>Modifica el programa para:
+            <ul>
+              <li>Agregar una función que encuentre todas las zonas con múltiples rutas desde/hacia otra zona</li>
+              <li>Calcular el "costo" promedio de las aristas</li>
+              <li>Identificar aristas "críticas" (si se eliminan, alguna zona queda aislada)</li>
+            </ul>
+          </li>
+        </ol>
+      </div>
+
+      <div class="error-box">
+        <h4>🎯 Reto Especial: Análisis del Problema E-F</h4>
+        <p><strong>Desafío:</strong> Implementa una función que detecte automáticamente pares de vértices con múltiples rutas entre ellos.</p>
+        <p><strong>Requerimiento C#:</strong></p>
+        <pre class="note">public List&lt;(T, T, int)&gt; FindMultipleRoutes()
+// Retorna lista de tuplas: (origen, destino, cantidad_de_rutas)</pre>
+        <p><strong>Requerimiento Python:</strong></p>
+        <pre class="note">def find_multiple_routes(graph):
+    """Retorna dict con pares que tienen múltiples rutas"""
+    # Tu código aquí</pre>
+        <p><strong>Resultado esperado:</strong> Debe detectar que F→E tiene 2 rutas (2.0 km y 4.0 km).</p>
+      </div>
+
+      <div class="activity">
+        <h4>Actividad 4: Extensiones (Opcional pero Recomendado)</h4>
+        <p><strong>Objetivo:</strong> Profundizar en operaciones avanzadas</p>
+        <ul>
+          <li><strong>Algoritmo de caminos:</strong> Implementa BFS para encontrar si existe camino entre dos zonas (aunque no sea directo).</li>
+          <li><strong>Análisis de conectividad:</strong> Determina si desde el Centro Comercial (A) se puede llegar a todas las demás zonas.</li>
+          <li><strong>Grafo inverso:</strong> Crea una función que invierta la dirección de todas las aristas dirigidas.</li>
+          <li><strong>Visualización:</strong> Exporta el grafo a formato DOT de Graphviz para visualizarlo.</li>
+          <li><strong>Estadísticas:</strong> Calcula la distribución de grados (cuántos vértices tienen grado 0, 1, 2, etc.)</li>
+        </ul>
+      </div>
+
+      <button class="btn" onclick="showSection('comparacion')">Ver Comparación →</button>
+    </section>
+
+    <!-- COMPARACIÓN -->
+    <section id="comparacion" class="section">
+      <h2>⚖️ Matriz vs Lista – Análisis de Trade-offs</h2>
+      
+      <table class="comparison-table">
+        <thead>
+          <tr><th>Criterio</th><th>Matriz de Adyacencia</th><th>Lista de Adyacencia</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Memoria</strong></td>
+            <td>O(n²) - siempre cuadrático</td>
+            <td>✅ O(n + m) - lineal en aristas</td>
+          </tr>
+          <tr>
+            <td><strong>Consulta (u,v)</strong></td>
+            <td>✅ O(1) - acceso directo</td>
+            <td>O(grado(u)) - búsqueda secuencial</td>
+          </tr>
+          <tr>
+            <td><strong>Agregar arista</strong></td>
+            <td>✅ O(1)</td>
+            <td>O(1) sin validar / O(grado(u)) validando</td>
+          </tr>
+          <tr>
+            <td><strong>Eliminar arista</strong></td>
+            <td>✅ O(1)</td>
+            <td>O(grado(u))</td>
+          </tr>
+          <tr>
+            <td><strong>Recorrer vecinos</strong></td>
+            <td>O(n) - revisar toda la fila</td>
+            <td>✅ O(grado(u)) - solo vecinos reales</td>
+          </tr>
+          <tr>
+            <td><strong>Espacio para grafo disperso</strong><br>(m ≪ n²)</td>
+            <td>❌ Desperdicia mucho espacio</td>
+            <td>✅ Eficiente</td>
+          </tr>
+          <tr>
+            <td><strong>Espacio para grafo denso</strong><br>(m ≈ n²)</td>
+            <td>✅ Apropiado</td>
+            <td>Similar a matriz</td>
+          </tr>
+          <tr>
+            <td><strong>Complejidad implementación</strong></td>
+            <td>✅ Muy simple</td>
+            <td>Media (requiere estructuras dinámicas)</td>
+          </tr>
+          <tr>
+            <td><strong>Soporte para multiaristas</strong></td>
+            <td>Complejo (requiere lista de pesos por celda)</td>
+            <td>✅ Natural (lista de tuplas (v, peso))</td>
+          </tr>
+          <tr>
+            <td><strong>Casos de uso ideales</strong></td>
+            <td>
+              • Grafos densos<br>
+              • Consultas frecuentes de existencia<br>
+              • n pequeño (< 1000)
+            </td>
+            <td>
+              ✅ • Grafos dispersos (típico en la práctica)<br>
+              • Algoritmos de recorrido (BFS, DFS)<br>
+              • Redes del mundo real<br>
+              • Multigrafos<br>
+              • n grande
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="challenge">
+        <h3>Regla de Oro para la Decisión</h3>
+        <p><strong>Si m ≪ n²:</strong> Usa <strong>Lista de Adyacencia</strong> (casi todos los casos reales)</p>
+        <p><strong>Si m ≈ n²:</strong> Considera <strong>Matriz de Adyacencia</strong> si necesitas O(1) en consultas</p>
+        <p><strong>Si tienes multiaristas:</strong> Lista de Adyacencia es OBLIGATORIA (soporta naturalmente)</p>
+        <p><strong>Si n < 1000 y necesitas simplicidad:</strong> Matriz puede ser aceptable (solo grafos simples)</p>
+      </div>
+
+      <div class="note" style="background:#fff3cd;border-left:5px solid #ffc107">
+<strong>📚 Nota sobre Multigrafos:</strong>
+
+Con <strong>matriz de adyacencia</strong>, cada celda mat[u][v] necesitaría almacenar una LISTA de pesos, perdiendo la ventaja de O(1):
+• mat[F][E] = [2.0, 4.0] (lista de pesos)
+• Acceso ya no es O(1), necesitas recorrer la lista
+• Desperdicio de memoria aumenta (n² listas, muchas vacías)
+
+Con <strong>lista de adyacencia</strong>, es natural:
+• adj[F] = [(E, 2.0), (E, 4.0), (D, 5.0)]
+• Cada tupla (v, peso) es independiente
+• No se pierde eficiencia
+
+<strong>Conclusión:</strong> Para multigrafos, lista de adyacencia es superior en todos los aspectos.
+      </div>
+
+      <h3>Ejemplo Numérico</h3>
+      <div class="note">
+<strong>Grafo con n = 10,000 vértices:</strong>
+
+Caso disperso (red social típica):
+• m = 50,000 aristas (cada persona conoce ~10 personas)
+• Matriz: 10,000² = 100,000,000 entradas → ~400 MB (usando ints)
+• Lista: 10,000 + 50,000 = 60,000 entradas → ~1 MB
+• <strong>Lista es 400× más eficiente en memoria</strong>
+
+Caso denso (grafo casi completo):
+• m = 49,995,000 aristas (99% de densidad)
+• Matriz: 100,000,000 entradas → ~400 MB
+• Lista: 10,000 + 49,995,000 ≈ 50,000,000 entradas → ~200 MB
+• Lista sigue siendo mejor, pero la diferencia es menor
+      </div>
+
+      <button class="btn" onclick="showSection('proyecto')">Conexión con Proyecto →</button>
+    </section>
+
+    <!-- PROYECTO -->
+    <section id="proyecto" class="section">
+      <h2>🧭 Conexión al Proyecto Integrador</h2>
+      
+      <div class="challenge">
+        <h3>Contexto del Proyecto</h3>
+        <p>Desarrollarás un sistema completo de análisis y optimización de redes urbanas que incluye:</p>
+        <ul>
+          <li><strong>Semana 3 (Actual):</strong> Modelado de red urbana como grafo mixto</li>
+          <li><strong>Semana 4:</strong> Algoritmos de recorrido (BFS, DFS) para exploración</li>
+          <li><strong>Semana 5:</strong> Caminos más cortos (Dijkstra, Bellman-Ford) para rutas óptimas</li>
+          <li><strong>Semana 6:</strong> Árbol de expansión mínima (Prim, Kruskal) para diseño de redes</li>
+          <li><strong>Semana 7-8:</strong> Aplicaciones avanzadas (flujo máximo, detección de ciclos, componentes fuertemente conexas)</li>
+        </ul>
+      </div>
+
+      <div class="activity">
+        <h4>Entregable: Avance 1 - Modelado del Grafo Urbano</h4>
+        <p><strong>Fecha límite:</strong> Fin de Semana 3</p>
+        <p><strong>Valor:</strong> 15% de la calificación del proyecto</p>
+        
+        <h5 style="margin-top:15px">📋 Requisitos Obligatorios:</h5>
+        
+        <p><strong>1. Diseño Conceptual (30 puntos)</strong></p>
+        <ul>
+          <li>Diagrama del mapa con <strong>mínimo 8 vértices</strong> (zonas/intersecciones)</li>
+          <li>Al menos <strong>12 aristas</strong> (calles/conexiones):
+            <ul>
+              <li>Mínimo 7 bidireccionales</li>
+              <li>Mínimo 5 dirigidas</li>
+            </ul>
+          </li>
+          <li>Tabla completa con todas las aristas y sus pesos justificados</li>
+          <li>Descripción de cada vértice (qué representa: zona comercial, hospital, etc.)</li>
+          <li><strong>Análisis del problema E-F:</strong> Si tu mapa tiene múltiples rutas entre el mismo par de vértices, explícalo</li>
+        </ul>
+        
+        <p><strong>2. Implementación en C# (35 puntos)</strong></p>
+        <ul>
+          <li>Clase <code>Graph&lt;string&gt;</code> completa y funcional con TODOS los métodos:
+            <ul>
+              <li>AddVertex, AddEdge (con prevención de duplicados)</li>
+              <li>HasEdge, Neighbors</li>
+              <li>OutDegree, InDegree (crítico para grafos mixtos)</li>
+              <li>RemoveEdge, RemoveVertex</li>
+              <li>VertexCount, EdgeCount, Print</li>
+            </ul>
+          </li>
+          <li>Programa principal que:
+            <ul>
+              <li>Carga tu mapa de ciudad completo</li>
+              <li>Imprime estadísticas (grados de todos los vértices)</li>
+              <li>Realiza al menos 5 consultas de existencia de aristas</li>
+              <li>Demuestra eliminación de una arista</li>
+            </ul>
+          </li>
+          <li>Código con <strong>comentarios explicativos</strong> (no excesivos, pero claros)</li>
+        </ul>
+        
+        <p><strong>3. Implementación en Python (35 puntos)</strong></p>
+        <ul>
+          <li>Archivo <code>ciudad.txt</code> con tu mapa completo (12+ aristas)</li>
+          <li>Módulo <code>grafo.py</code> con TODAS las funciones:
+            <ul>
+              <li>create_graph, add_vertex, add_edge</li>
+              <li>has_edge, neighbors</li>
+              <li>out_degree, in_degree</li>
+              <li>remove_edge, load_graph, print_graph</li>
+            </ul>
+          </li>
+          <li>Script <code>main.py</code> que:
+            <ul>
+              <li>Carga desde archivo con manejo de errores</li>
+              <li>Imprime el grafo completo</li>
+              <li>Realiza análisis de grados de todos los vértices</li>
+              <li>Detecta zonas críticas (sin entradas o sin salidas)</li>
+              <li>Si tienes múltiples rutas entre vértices, las identifica automáticamente</li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+
+      <div class="activity">
+        <h4>📊 Formato del Reporte Técnico (Obligatorio)</h4>
+        <p>Documento PDF de 3-5 páginas que incluya:</p>
+        
+        <p><strong>Sección 1: Modelado del Problema</strong></p>
+        <ul>
+          <li>Descripción del contexto (ciudad, campus, red corporativa, etc.)</li>
+          <li>Justificación del tipo de grafo (¿por qué mixto? ¿por qué dirigido/no dirigido?)</li>
+          <li>Explicación de los pesos (distancias, tiempos, costos, etc.)</li>
+        </ul>
+        
+        <p><strong>Sección 2: Elección de Representación</strong></p>
+        <ul>
+          <li>Comparación Matriz vs Lista para TU caso específico</li>
+          <li>Cálculo de memoria: O(n²) vs O(n+m) con valores reales</li>
+          <li>Análisis de operaciones frecuentes en tu aplicación</li>
+          <li><strong>Decisión final justificada</strong></li>
+        </ul>
+        
+        <p><strong>Sección 3: Análisis de Complejidad</strong></p>
+        <ul>
+          <li>Tabla con complejidad de cada operación en tu implementación</li>
+          <li>Identificación de operaciones más costosas</li>
+          <li>Propuestas de optimización (si aplica)</li>
+        </ul>
+        
+        <p><strong>Sección 4: Pruebas y Resultados</strong></p>
+        <ul>
+          <li>Capturas de pantalla de ambas implementaciones (C# y Python)</li>
+          <li>Tabla comparativa de resultados (grados calculados en ambos lenguajes)</li>
+          <li>Análisis del problema de múltiples rutas (si aplica en tu mapa)</li>
+        </ul>
+      </div>
+
+      <div class="error-box">
+        <h4>⚠️ Errores Comunes que Restan Puntos</h4>
+        <ul>
+          <li>❌ <strong>Permitir aristas duplicadas</strong> sin justificación de multigrafo</li>
+          <li>❌ <strong>No distinguir</strong> entre grado de entrada y salida</li>
+          <li>❌ <strong>Olvidar agregar ambas direcciones</strong> en aristas bidireccionales</li>
+          <li>❌ <strong>Código sin comentarios</strong> o con comentarios excesivos/redundantes</li>
+          <li>❌ <strong>Implementaciones inconsistentes</strong> entre C# y Python</li>
+          <li>❌ <strong>No validar entrada</strong> en carga de archivos</li>
+          <li>❌ <strong>Reporte sin análisis</strong> (solo copiar código sin explicar)</li>
+        </ul>
+      </div>
+
+      <div class="activity">
+        <h4>✅ Checklist de Validación Pre-Entrega</h4>
+        <p>Antes de entregar, verifica que:</p>
+        <ul>
+          <li>☐ El grafo tiene mínimo 8 vértices y 12 aristas</li>
+          <li>☐ Incluye AMBOS tipos de aristas (dirigidas y bidireccionales)</li>
+          <li>☐ Las implementaciones en C# y Python dan los <strong>mismos resultados</strong></li>
+          <li>☐ Los grados calculados coinciden entre ambos lenguajes</li>
+          <li>☐ No hay aristas duplicadas (o están justificadas como multigrafo)</li>
+          <li>☐ Todos los métodos/funciones requeridos están implementados</li>
+          <li>☐ El código compila/ejecuta sin errores</li>
+          <li>☐ El archivo de texto se carga correctamente</li>
+          <li>☐ El reporte incluye TODAS las secciones requeridas</li>
+          <li>☐ Hay capturas de pantalla de ambas implementaciones</li>
+          <li>☐ La justificación de representación (matriz vs lista) es técnica y específica</li>
+        </ul>
+      </div>
+
+      <div class="note">
+<strong>💡 Consejo Profesional:</strong> 
+
+Este avance es la BASE de todo tu proyecto. Invierte tiempo en un buen diseño ahora, porque las próximas semanas construirás sobre esta estructura. Un grafo mal modelado dificultará la implementación de algoritmos de búsqueda y optimización.
+
+<strong>Estrategia recomendada:</strong>
+1. Empieza con el ejemplo de la ciudad de este documento
+2. Modifícalo gradualmente para tu propio caso
+3. Prueba CADA modificación antes de continuar
+4. Usa control de versiones (Git) para no perder tu trabajo
+      </div>
+
+      <div style="text-align:center;margin-top:20px">
+        <button class="btn btn-success" onclick="alert('¡Excelente! Has completado la Semana 3.\\n\\nRecuerda:\\n• Guarda tu código en repositorio Git\\n• Documenta todo claramente\\n• Prepara tu entregable antes de la fecha límite\\n\\n¡Éxito en tu proyecto!')">✓ Marcar Semana 3 como Completada</button>
+        <button class="btn" onclick="showSection('introduccion')">🔄 Volver al Inicio</button>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    let currentSection = 'introduccion';
+    const sections = ['introduccion','conceptos','representaciones','problema','cs','py','actividades','comparacion','proyecto'];
+
+    function showSection(name){
+      document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+      const targetSection = document.getElementById(name);
+      if(targetSection){
+        targetSection.classList.add('active','fade-in');
+      }
+      document.querySelectorAll('.nav-link').forEach(l=>l.classList.remove('active'));
+      const navLink = document.querySelector(`[onclick="showSection('${name}')"]`);
+      if(navLink) navLink.classList.add('active');
+      updateProgress(name);
+      currentSection=name;
+      window.scrollTo({top:0, behavior:'smooth'});
+    }
+    
+    function updateProgress(name){
+      const i = sections.indexOf(name);
+      const progress = i >= 0 ? ((i+1)/sections.length)*100 : 0;
+      document.getElementById('progress').style.width = progress + '%';
+    }
+
+    // Navegación con teclado
+    document.addEventListener('keydown',(e)=>{
+      const i = sections.indexOf(currentSection);
+      if(e.key==='ArrowRight' && i < sections.length-1) showSection(sections[i+1]);
+      else if(e.key==='ArrowLeft' && i>0) showSection(sections[i-1]);
+    });
+
+    // Easter egg con tip educativo
+    let seq=[]; 
+    const KONAMI=['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','KeyB','KeyA'];
+    document.addEventListener('keydown',(e)=>{
+      seq.push(e.code); 
+      if(seq.length>KONAMI.length) seq.shift();
+      if(seq.join(',')===KONAMI.join(',')){
+        alert('🎮 ¡Código Konami desbloqueado!\n\n💡 Tip de Grafos:\n\n' +
+              'Para grafos dispersos (m ≪ n²), la lista de adyacencia es casi siempre superior.\n' +
+              'La mayoría de grafos del mundo real son dispersos:\n' +
+              '• Redes sociales\n' +
+              '• Mapas de carreteras\n' +
+              '• Internet\n' +
+              '• Redes biológicas\n\n' +
+              '¡Usa listas de adyacencia por defecto!');
+        seq=[];
+      }
+    });
+
+    updateProgress('introduccion');
+  </script>
+</body>
+</html>
